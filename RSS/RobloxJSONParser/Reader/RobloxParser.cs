@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RGS.Misc;
+using RSS.Misc;
 using System.Text.RegularExpressions;
 
-namespace RGS.RobloxJSONParser.Reader
+namespace RSS.RobloxJSONParser.Reader
 {
     internal static class RobloxParser
     {

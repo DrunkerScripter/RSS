@@ -5,9 +5,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using RGS.RobloxJSONParser.Writer;
+using RSS.RobloxJSONParser.Writer;
+//using RSS.RobloxJSONParser.Writer;
 
-namespace RGS.Http
+namespace RSS.Http
 {
     static class StudioHttpServer
     {
@@ -119,7 +120,7 @@ namespace RGS.Http
                 return false;
             else
             {
-                string strList = RSSJSONTranslator.ToList(TempFileManager.Guids.ToArray(), true);
+                string strList = JSONWriter.SerialiseToJSONList(TempFileManager.Guids.ToArray(), true);
 
                 TempFileManager.Guids.Clear();
 
@@ -153,15 +154,15 @@ namespace RGS.Http
 
             WriteResponseBinary(response, "Unkown ID");
         }
-        
 
+        private static string URLLink;
 
         internal static void Start()
         {
             if (IsActive)
                 return;
 
-            string URLLink = $"{URL_LINK}{randomURLNumber}/";
+            URLLink = $"{URL_LINK}{randomURLNumber}/";
 
             try
             {
@@ -175,9 +176,12 @@ namespace RGS.Http
                 Environment.Exit(0);
             }
 
+        }
 
-            WriteColor(ConsoleColor.DarkYellow, "Launched Server on URL - ");
-            
+        internal static void PrintAboutServer()
+        {
+            WriteColor(ConsoleColor.DarkYellow, "Server on URL - ");
+
             WriteColor(ConsoleColor.Cyan, URLLink);
 
             Console.WriteLine();

@@ -36,6 +36,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,24 +52,25 @@
     <Compile Include="ParserException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RGSParser\CustomProperties.cs" />
-    <Compile Include="RGSParser\PRobloxInstance.cs" />
-    <Compile Include="RGSParser\PRobloxProperty.cs" />
-    <Compile Include="RGSParser\RGSParser.cs" />
-    <Compile Include="RGSParser\RGSParserManager.cs" />
-    <Compile Include="RGSParser\VariableParser.cs" />
+    <Compile Include="RobloxJSONParser\Writer\JSONWriter.cs" />
+    <Compile Include="RobloxJSONParser\Writer\TempFileManager.cs" />
+    <Compile Include="RSSParser\CustomProperties.cs" />
+    <Compile Include="RSSParser\ParsedObjects.cs" />
+    <Compile Include="RSSParser\PropertyParser.cs" />
+    <Compile Include="RSSParser\RSSParser.cs" />
+    <Compile Include="RSSParser\Scope.cs" />
+    <Compile Include="RSSParser\Statments.cs" />
     <Compile Include="RobloxJSONParser\Reader\RobloxBase.cs" />
     <Compile Include="RobloxJSONParser\Reader\RobloxEnum.cs" />
     <Compile Include="RobloxJSONParser\Reader\RobloxEnumItem.cs" />
     <Compile Include="RobloxJSONParser\Reader\RobloxInstance.cs" />
     <Compile Include="RobloxJSONParser\Reader\RobloxParser.cs" />
     <Compile Include="RobloxJSONParser\Reader\RobloxProperty.cs" />
-    <Compile Include="RobloxJSONParser\Writer\RGSJSONWriter.cs" />
-    <Compile Include="RobloxJSONParser\Writer\TempFileManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RGS.Misc;
-using RGS.RobloxJSONParser.Reader;
-using RGS.RGSParser;
-using RGS.Http;
+using RSS.Misc;
+using RSS.RobloxJSONParser.Reader;
+//using RSS.RSSParser;
+using RSS.Http;
 using System.Runtime.InteropServices;
-using RGS.RobloxJSONParser.Writer;
+using RSS.RSSParser;
+using RSS.RSSParser;
+using RSS.RobloxJSONParser.Writer;
+//using RSS.RobloxJSONParser.Writer;
 
-namespace RGS
+namespace RSS
 {
     class Program
     {
@@ -29,7 +32,8 @@ namespace RGS
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Failed to download ROBLOX Api {e.Message}");
+                Console.WriteLine($"Failed to launch {e.Message}");
+                Console.ReadKey();
                 return -1;
             }
 
@@ -60,6 +64,7 @@ namespace RGS
             string Command = "";
             do
             {
+                StudioHttpServer.PrintAboutServer();
                 Console.WriteLine($"RSS Version {VERSION}");
                 Command = Console.ReadLine();
 
@@ -76,7 +81,7 @@ namespace RGS
                 Console.WriteLine();
 
                 try {
-                    RGSParserManager.Parse(splitCommand);
+                    RSSParser.RSSParser.Parse(splitCommand);
                 }
                 catch(ParserException e)
                 {
@@ -88,7 +93,7 @@ namespace RGS
                 Console.WriteLine();
             } while (Command != "quit");
 
-            TempFileManager.Delete();
+         //  TempFileManager.Delete();
 
         }
       

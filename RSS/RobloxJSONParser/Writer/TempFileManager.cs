@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RGS.RobloxJSONParser.Writer
+namespace RSS.RobloxJSONParser.Writer
 {
     static class TempFileManager
     {
@@ -91,5 +91,8 @@ namespace RGS.RobloxJSONParser.Writer
             if (File.Exists(combinedPath))
                 File.Delete(combinedPath);
         }
+        
+            
+        
     }
 }

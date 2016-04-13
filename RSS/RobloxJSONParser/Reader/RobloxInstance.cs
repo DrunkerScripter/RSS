@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RGS.RobloxJSONParser.Reader
+namespace RSS.RobloxJSONParser.Reader
 {
     class RobloxInstance : RobloxBase
     {
@@ -61,5 +61,7 @@ namespace RGS.RobloxJSONParser.Reader
         {
             _SuperclassName = superclass;
         }
+
+
     }
 }
