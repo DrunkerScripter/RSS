@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RobloxStyleLanguage.Http
+namespace RSS.Http
 {
-    public class WebServer : IDisposable
+    public class WebServer : IDisposable 
     {
         private readonly HttpListener _listener = new HttpListener();
         private readonly Action<HttpListenerContext> _responderMethod;

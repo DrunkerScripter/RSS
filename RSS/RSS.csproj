@@ -51,7 +51,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>RobloxStyleLanguage.Program</StartupObject>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -76,6 +77,7 @@
     <Compile Include="RobloxJSONParser\Writer\JSONWriter.cs" />
     <Compile Include="RobloxJSONParser\Writer\TempFileManager.cs" />
     <Compile Include="RSSParser\CustomProperties.cs" />
+    <Compile Include="RSSParser\MaterialColors.cs" />
     <Compile Include="RSSParser\ParsedObjects.cs" />
     <Compile Include="RSSParser\PropertyParser.cs" />
     <Compile Include="RSSParser\RSSParser.cs" />

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using RobloxStyleLanguage.RSSParser;
-using RobloxStyleLanguage;
-using RobloxStyleLanguage.Statments;
-using RobloxStyleLanguage.RobloxJSONParser.Reader;
+using RSS.RSSParser;
+using RSS;
+using RSS.Statments;
+using RSS.RobloxJSONParser.Reader;
 
 #region Statments
-namespace RobloxStyleLanguage.Statments
+namespace RSS.Statments
 {
     interface Statment
     {
@@ -82,13 +82,16 @@ class WidgetDeclaration : Statment
     {
         Match m = DetailsRegex.Match(Line);
 
-        string widgetName = m.Groups["classname"].Value;
-        string widgetClassName = m.Groups["name"].Value;
+        string widgetClass = m.Groups["classname"].Value;
+        string widgetName = m.Groups["name"].Value;
 
-        if (string.IsNullOrWhiteSpace(widgetName))
+        if (string.IsNullOrWhiteSpace(widgetClass))
             throw new ParserException("You cannot leave the classname blank");
 
-        return new string[] { widgetName, widgetClassName };
+        if (!RobloxParser.RobloxHierachy.ContainsKey(widgetName))
+            throw new ParserException($"The ClassName {widgetClass} does not exsist.");
+
+        return new string[] { widgetClass, widgetName };
     }
 
     public bool IsMatch(string Line)
@@ -226,6 +229,15 @@ class StyleScopeStatment : Statment
         if (string.IsNullOrWhiteSpace(styleName))
             throw new ParserException("The style name cannot be blank.");
 
+        if (RSSParser.CurrentParser.Styles != null)
+        {
+            RSSStyle Style = RSSParser.CurrentParser.Styles.Find(Instance => Instance.styleName == styleName);
+
+            if (Style != null)
+                throw new ParserException($"The style {styleName} already exsist");
+
+        }
+
         return new string[] { styleName };
     }
 
@@ -298,7 +310,7 @@ class StyleIdStatment : Statment
 
 #endregion
 
-namespace RobloxStyleLanguage.RSSParser
+namespace RSS.RSSParser
 {
 
     enum StatmentType

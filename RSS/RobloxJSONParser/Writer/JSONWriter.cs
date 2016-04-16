@@ -1,4 +1,4 @@
-﻿using RobloxStyleLanguage.RSSParser;
+﻿using RSS.RSSParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RobloxStyleLanguage.RobloxJSONParser.Writer
+namespace RSS.RobloxJSONParser.Writer
 {
 
     class RetentiveStream : StreamWriter

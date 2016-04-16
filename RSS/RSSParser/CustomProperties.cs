@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RobloxStyleLanguage.RobloxJSONParser.Reader;
+using RSS.RobloxJSONParser.Reader;
+using RSS.RSSParser;
 
-namespace RobloxStyleLanguage.RSSParser
+namespace RSS.RSSParser
 {
     static class CustomProperties
     {
@@ -18,6 +19,26 @@ namespace RobloxStyleLanguage.RSSParser
                 Enum.AddEnumItem(Item, null);
 
             RobloxEnum.Enums.Add(EnumName, Enum);
+        }
+
+        private static void AddColors()
+        {
+            RobloxEnum Color = new RobloxEnum("Color", null);
+
+            foreach (var ColorKP in MaterialColors.Colors)
+            {
+                string Key = ColorKP.Key;
+
+                if (ColorKP.Value == null)
+                    Color.AddEnumItem(Key, null);
+                else
+                    foreach(var s in ColorKP.Value)
+                        Color.AddEnumItem($"{Key}-{s}", null);
+                
+            }
+
+            RobloxEnum.Enums.Add("Color", Color);
+
         }
 
         internal static void Init()
@@ -39,6 +60,10 @@ namespace RobloxStyleLanguage.RSSParser
             GuiObject.AddProperty(new RobloxProperty("CustomStyle", null, "Style"));
 
             AddRobloxEnum("Alignment", "Top-Left", "Top-Centre", "Top-Right", "Centre-Left", "Centre", "Centre-Right", "Bottom-Left", "Bottom-Right");
+
+            //Adding colors and stuff.
+
+            AddColors();
 
         }
 

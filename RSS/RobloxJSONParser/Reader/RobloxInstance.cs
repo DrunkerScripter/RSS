@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RobloxStyleLanguage.RobloxJSONParser.Reader
+namespace RSS.RobloxJSONParser.Reader
 {
     class RobloxInstance : RobloxBase
     {

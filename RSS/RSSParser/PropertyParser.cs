@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RobloxStyleLanguage.RSSParser;
-using RobloxStyleLanguage.RobloxJSONParser.Reader;
+using RSS.RSSParser;
+using RSS.RobloxJSONParser.Reader;
 using System.Drawing;
-using RobloxStyleLanguage.RobloxJSONParser.Writer;
+using RSS.RobloxJSONParser.Writer;
 
-namespace RobloxStyleLanguage.RSSParser
+namespace RSS.RSSParser
 {
     static class PropertyParser
     {
@@ -83,7 +83,7 @@ namespace RobloxStyleLanguage.RSSParser
                         if (!Enum.HasEnumItem(varVal))
                             throw new ParserException($"The Enunm {Enum.Name} does not have the item {varVal}");
 
-                        Instance.AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, new string[] { RobloxStyleLanguage.RobloxJSONParser.Writer.JSONWriter.Quotify(varVal) }));   
+                        Instance.AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, new string[] { RSS.RobloxJSONParser.Writer.JSONWriter.Quotify(varVal) }));   
                     }
                     else
                         Instance.AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, Callback(varVal, WScope))); 
@@ -184,6 +184,13 @@ namespace RobloxStyleLanguage.RSSParser
                     {
                         throw new ParserException("Failed to convert to Color3");
                     }
+                }
+                else if (str.Contains("-"))
+                {
+                    if (!RobloxEnum.Enums["Color"].HasEnumItem(str))
+                        throw new ParserException($"No inbuilt color {str}");
+
+                    return new string[] { JSONWriter.Quotify($"inbuilt-Color:{str}") };
                 }
                 else
                 {

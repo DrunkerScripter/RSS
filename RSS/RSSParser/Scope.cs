@@ -1,12 +1,12 @@
-﻿using RobloxStyleLanguage.RSSParser;
-using RobloxStyleLanguage.Statments;
+﻿using RSS.RSSParser;
+using RSS.Statments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RobloxStyleLanguage.RSSParser
+namespace RSS.RSSParser
 {
 
 
