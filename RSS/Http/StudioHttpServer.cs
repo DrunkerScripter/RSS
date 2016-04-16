@@ -5,10 +5,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using RSS.RobloxJSONParser.Writer;
+using RobloxStyleLanguage.RobloxJSONParser.Writer;
 //using RSS.RobloxJSONParser.Writer;
 
-namespace RSS.Http
+namespace RobloxStyleLanguage.Http
 {
     static class StudioHttpServer
     {

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RSS.RSSParser;
+using RobloxStyleLanguage.RSSParser;
 using System.IO;
-using RSS.RobloxJSONParser.Writer;
-using RSS.Statments;
+using RobloxStyleLanguage.RobloxJSONParser.Writer;
+using RobloxStyleLanguage.Statments;
 
-namespace RSS.RSSParser
+namespace RobloxStyleLanguage.RSSParser
 {
     class RSSParser
     {

@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RSS.Misc;
+using RobloxStyleLanguage.Misc;
 using System.Text.RegularExpressions;
 
-namespace RSS.RobloxJSONParser.Reader
+namespace RobloxStyleLanguage.RobloxJSONParser.Reader
 {
     internal static class RobloxParser
     {
@@ -119,7 +119,7 @@ namespace RSS.RobloxJSONParser.Reader
 
                 ForEachCurleyBrace(Reader, ProcessRow);
             }
-            catch (Exception e) { throw e; } //I want the exception to be caught higher up in the program.
+            catch (Exception e) { throw new Exception(e.Message); } //I want the exception to be caught higher up in the program.
             finally //but i want this finally statmet
             {
                 if (Reader != null)

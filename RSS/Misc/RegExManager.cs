@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 
 
-namespace RSS.Misc
+namespace RobloxStyleLanguage.Misc
 {
     static class RegExManager
     {

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RSS.Misc;
-using RSS.RobloxJSONParser.Reader;
+using RobloxStyleLanguage.Misc;
+using RobloxStyleLanguage.RobloxJSONParser.Reader;
 //using RSS.RSSParser;
-using RSS.Http;
+using RobloxStyleLanguage.Http;
 using System.Runtime.InteropServices;
-using RSS.RSSParser;
-using RSS.RobloxJSONParser.Writer;
+using RobloxStyleLanguage.RSSParser;
+using RobloxStyleLanguage.RobloxJSONParser.Writer;
 //using RSS.RobloxJSONParser.Writer;
 
-namespace RSS
+namespace RobloxStyleLanguage
 {
     class Program
     {

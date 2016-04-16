@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using RSS.RSSParser;
-using RSS;
-using RSS.Statments;
-using RSS.RobloxJSONParser.Reader;
+using RobloxStyleLanguage.RSSParser;
+using RobloxStyleLanguage;
+using RobloxStyleLanguage.Statments;
+using RobloxStyleLanguage.RobloxJSONParser.Reader;
 
 #region Statments
-namespace RSS.Statments
+namespace RobloxStyleLanguage.Statments
 {
     interface Statment
     {
@@ -298,7 +298,7 @@ class StyleIdStatment : Statment
 
 #endregion
 
-namespace RSS.RSSParser
+namespace RobloxStyleLanguage.RSSParser
 {
 
     enum StatmentType

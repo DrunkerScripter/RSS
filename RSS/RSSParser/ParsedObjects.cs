@@ -1,11 +1,11 @@
-﻿using RSS.RobloxJSONParser.Reader;
+﻿using RobloxStyleLanguage.RobloxJSONParser.Reader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RSS.RSSParser
+namespace RobloxStyleLanguage.RSSParser
 {
     class RSSProperty
     {
@@ -74,9 +74,7 @@ namespace RSS.RSSParser
         {
             if (Properties == null)
                 Properties = new List<RSSProperty>();
-
-            Console.WriteLine($"Added Property {prop.Name} with (first) value {prop.Values[0]} to {Name}");
-
+                
             Properties.Add(prop);
         }
 

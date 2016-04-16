@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RSS.RobloxJSONParser.Writer
+namespace RobloxStyleLanguage.RobloxJSONParser.Writer
 {
     static class TempFileManager
     {

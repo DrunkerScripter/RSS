@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RSS.RobloxJSONParser.Reader
+namespace RobloxStyleLanguage.RobloxJSONParser.Reader
 {
     class RobloxEnum : RobloxBase
     {

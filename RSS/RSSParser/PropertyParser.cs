@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RSS.RSSParser;
-using RSS.RobloxJSONParser.Reader;
+using RobloxStyleLanguage.RSSParser;
+using RobloxStyleLanguage.RobloxJSONParser.Reader;
 using System.Drawing;
-using RSS.RobloxJSONParser.Writer;
+using RobloxStyleLanguage.RobloxJSONParser.Writer;
 
-namespace RSS.RSSParser
+namespace RobloxStyleLanguage.RSSParser
 {
     static class PropertyParser
     {
@@ -83,7 +83,7 @@ namespace RSS.RSSParser
                         if (!Enum.HasEnumItem(varVal))
                             throw new ParserException($"The Enunm {Enum.Name} does not have the item {varVal}");
 
-                        Instance.AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, new string[] { RSS.RobloxJSONParser.Writer.JSONWriter.Quotify(varVal) }));   
+                        Instance.AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, new string[] { RobloxStyleLanguage.RobloxJSONParser.Writer.JSONWriter.Quotify(varVal) }));   
                     }
                     else
                         Instance.AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, Callback(varVal, WScope))); 

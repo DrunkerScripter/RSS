@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RSS.Http
+namespace RobloxStyleLanguage.Http
 {
-    public class WebServer
+    public class WebServer : IDisposable
     {
         private readonly HttpListener _listener = new HttpListener();
         private readonly Action<HttpListenerContext> _responderMethod;
@@ -38,6 +38,11 @@ namespace RSS.Http
         public WebServer(Action<HttpListenerContext> method, params string[] prefixes)
             : this(prefixes, method)
         { }
+
+        public void Dispose()
+        {
+            ((IDisposable)_listener).Dispose();
+        }
 
         public void Run()
         {

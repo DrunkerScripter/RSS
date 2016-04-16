@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RSS.RobloxJSONParser.Reader;
+using RobloxStyleLanguage.RobloxJSONParser.Reader;
 
-namespace RSS.RSSParser
+namespace RobloxStyleLanguage.RSSParser
 {
     static class CustomProperties
     {

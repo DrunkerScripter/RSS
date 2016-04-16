@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 
-namespace RSS.Misc
+namespace RobloxStyleLanguage.Misc
 {
     static class APIFetcher
     {

@@ -1,4 +1,4 @@
-﻿using RSS.RSSParser;
+﻿using RobloxStyleLanguage.RSSParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RSS.RobloxJSONParser.Writer
+namespace RobloxStyleLanguage.RobloxJSONParser.Writer
 {
 
     class RetentiveStream : StreamWriter
@@ -39,7 +39,7 @@ namespace RSS.RobloxJSONParser.Writer
     }
 
 
-    class JSONWriter
+    class JSONWriter : IDisposable
     {
         internal static string Quotify(string s)
         {
@@ -275,6 +275,11 @@ namespace RSS.RobloxJSONParser.Writer
             W.SerialiseParser();
 
             W.Close();
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)Stream).Dispose();
         }
     }
 }
