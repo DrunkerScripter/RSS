@@ -29,7 +29,7 @@ namespace RSS.RobloxJSONParser.Writer
 
         public void WriteComma()
         {
-            if (lastLetter != ',')
+            if (lastLetter != ',' && (lastLetter == ']' || lastLetter == '}' || lastLetter == '"'))
                 Write(',');
         }
 
@@ -145,6 +145,75 @@ namespace RSS.RobloxJSONParser.Writer
                 });
         }
         
+        private void WriteStyleItem(RSSStyleItem Item)
+        {
+            WriteBetween('{', '}', () =>
+            {
+                Stream.Write("\"Classes\":");
+                Stream.Write(SerialiseToJSONList(Item.Ids, true));
+
+                if (Item.Properties != null && Item.Properties.Count > 0)
+                {
+                    Stream.WriteComma();
+                    Stream.Write("\"Properties\":");
+                    WriteBetween('{', '}', () =>
+                    {
+                        WriteArrayWithProperties(Item.Properties.ToArray(), WriteProperty);
+                    });
+                }
+            });
+        }
+
+        private void WriteStyleIdList(List<RSSStyleItem> Ids)
+        {
+            if (Ids != null && Ids.Count > 0)
+            {
+                Stream.WriteComma();
+                Stream.Write("\"StyleIds\":");
+                WriteBetween('[', ']', () =>
+                    {
+
+                        RSSStyleItem[] IdsArr = Ids.ToArray();
+                        
+                        for (int i = 0; i < IdsArr.Length; i++)
+                        {
+                            WriteStyleItem(IdsArr[i]);
+
+                            if (i != IdsArr.Length - 1)
+                                Stream.WriteComma();
+                        }
+                    });
+            }
+        }
+
+        private void WriteStyle(RSSStyle Style)
+        {
+            WriteBetween('{', '}', () =>
+            {
+                Stream.Write($"\"Name\":{Quotify(Style.styleName)}");
+
+                WriteStyleIdList(Style.styleIds);
+            });
+        }
+
+        private void WriteStyleList(string Name, List<RSSStyle> Styles)
+        {
+            Stream.Write($"{Quotify(Name)}:");
+            WriteBetween('[', ']', () => {
+
+                var St = Styles.ToArray();
+
+                for (int i = 0; i < St.Length; i++)
+                {
+                    WriteStyle(St[i]);
+
+                    if (i != St.Length - 1)
+                        Stream.WriteComma();
+                }
+
+            });
+        }
+
 
         private void WriteBetween(char first, char end, Action Centre)
         {
@@ -157,10 +226,24 @@ namespace RSS.RobloxJSONParser.Writer
 
         public void SerialiseParser()
         {
-            WriteBetween('{', '}', () => {
-                WriteInstanceList("CustomWidgets", Parser.CustomWidgets);
-                Stream.WriteComma();
-                WriteInstanceList("ParsedInstances", Parser.FinishedWidgets);
+            WriteBetween('{', '}', () =>
+            {
+                if (Parser.CustomWidgets != null && Parser.CustomWidgets.Count > 0)
+                    WriteInstanceList("CustomWidgets", Parser.CustomWidgets);
+
+
+                if (Parser.FinishedWidgets != null && Parser.FinishedWidgets.Count > 0)
+                {
+                    Stream.WriteComma();
+                    WriteInstanceList("ParsedInstances", Parser.FinishedWidgets);
+                }       
+
+                if (Parser.Styles != null && Parser.Styles.Count > 0)
+                {
+                    Stream.WriteComma();
+                    WriteStyleList("Styles", Parser.Styles);
+                }
+
             });
         }
         

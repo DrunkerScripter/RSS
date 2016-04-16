@@ -87,6 +87,9 @@ namespace RSS.RSSParser
 
         private void CloseScope()
         {
+            if (Scopes.Count == 0)
+                throw new ParserException("Attempted to end the global scope.");
+
             Scope scope = Scopes.Pop();
 
             RSSParser.Finalise(scope);
@@ -94,11 +97,34 @@ namespace RSS.RSSParser
 
         private void ProcessPropertyAssignment(string[] details, Scope sc)
         {
-            var WS = sc as WidgetScope;
+            switch (sc.ID)
+            {
+                case "Widget":
+                    var WS = sc as WidgetScope;
 
-            if (WS != null)
-                PropertyParser.Parse(sc, details[1], details[0]);
+                    if (WS != null)
+                    {
+                        PropertyParser.Parse(sc, details[1], details[0]);
+                    }
+
+                    break;
+                case "StyleId":
+                    var SS = sc as StyleIdScope;
+
+                    if (SS != null)
+                    {
+                        PropertyParser.Parse(sc, details[1], details[0], SS.ClassNames);
+                    }
+                    break;
+            }
             
+        }
+
+        private void ProcessStyleScope(string Line, string[] details, Statment ID)
+        {
+            StyleScope sc = (StyleScope)ID.Generate(Line, (Scopes.Count == 0 ? this : Scopes.Peek()));
+
+            Scopes.Push(sc);
         }
 
         internal void AddStatment(Statment Stat, string line)
@@ -114,6 +140,8 @@ namespace RSS.RSSParser
                 if (Stat.ID != StatmentType.ScopeEnding && Stat.ID != StatmentType.Any)
                     if (!Scopes.Peek().AcceptsStatmentType(Stat.ID))
                         throw new ParserException("Attempted to open an unaccepted scope");
+
+
 
             string[] details = Stat.GetDetails(line);
 
@@ -132,6 +160,12 @@ namespace RSS.RSSParser
                     ProcessCustomWidgetScope(line, Stat, details);
                     //Check the custom class exsists.
                     break;
+                case StatmentType.StyleScopeOpening:
+                    ProcessStyleScope(line, details, Stat);
+                    break;
+                case StatmentType.StyleIdOpening:
+                    ProcessStyleId(details, Stat);
+                    break;
                 default:
                     bool isCustom = line.StartsWith("widget");
                     RSSInstance Instance = new RSSInstance(details[0], details[1], isCustom);
@@ -145,6 +179,18 @@ namespace RSS.RSSParser
             }
             
 
+        }
+
+        private void ProcessStyleId(string[] details, Statment stat)
+        {
+            if (Scopes.Count == 0)
+                throw new ParserException("Can't open a style id this scope.");
+
+            StyleIdScope StScope = (StyleIdScope)stat.Generate(null, (Scopes.Count == 0 ? this : Scopes.Peek()));
+
+            StScope.ClassNames = details;
+
+            Scopes.Push(StScope);
         }
 
         private void ProcessCustomWidgetScope(string Line, Statment Stat, string[] details)
@@ -177,13 +223,51 @@ namespace RSS.RSSParser
         
     }
 
+    class StyleScope : ListScope<RSSStyleItem>
+    {
+        public string StyleName { get; set; }
+
+        public StyleScope(RSSParser Parser, StatmentType[] ID, Scope Parent) : base(Parser, ID, Parent, "Style") { }
+
+        public StyleScope(RSSParser Parser, StatmentType[] ID, Scope Parent, string Name) : base(Parser, ID, Parent, "Style")
+        {
+            StyleName = Name;
+        }
+
+        internal void AddStatment(StyleIdScope IdScope)
+        {
+            if (this.Ids == null)
+                this.Ids = new List<RSSStyleItem>();
+
+            Ids.Add(new RSSStyleItem(IdScope.ClassNames, IdScope.Ids));
+        }
+    }
+
+    class StyleIdScope : ListScope<RSSProperty>
+    {
+        public string[] ClassNames;
+
+        public StyleIdScope(RSSParser Parser, StatmentType[] ID, Scope Parent, string[] ClassNames) : base(Parser, ID, Parent, "StyleId") { }
+
+        internal void AddProperty(RSSProperty rSSProperty)
+        {
+            if (Ids == null)
+                Ids = new List<RSSProperty>();
+
+            Ids.Add(rSSProperty);
+
+        }
+    }
+
     //Only 1 level of scopes are allowed to be defined within this scope.
     //The type of the scope defined within this scope is enforced with the type parameter.
     class ListScope<E> : Scope
     {
-        public new List<E> Scopes;
+        public List<E> Ids;
 
-        public ListScope(RSSParser Parser, StatmentType[] ID, Scope Parent) : base(Parser, ID, Parent) { }
+        public ListScope(RSSParser Parser, StatmentType[] ID, Scope Parent, string ScopeType = "Generic") : base(Parser, ID, Parent, ScopeType) { }
+
+       
     }
 
 

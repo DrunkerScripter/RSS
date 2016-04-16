@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using RSS.RSSParser;
 using RSS;
 using RSS.Statments;
+using RSS.RobloxJSONParser.Reader;
 
 #region Statments
 namespace RSS.Statments
@@ -92,7 +93,7 @@ class WidgetDeclaration : Statment
 
     public bool IsMatch(string Line)
     {
-        return MatchRegex.IsMatch(Line);
+        return MatchRegex.IsMatch(Line) && !Line.StartsWith("style ");
     }
 
     public Scope Generate(string Line, Scope Parent)
@@ -187,16 +188,105 @@ class CustomWidgetDeclaration : Statment
         string customWidgetName = m.Groups["custom_widget_name"].Value;
 
         if (string.IsNullOrWhiteSpace(customWidgetName))
-            throw new ParserException("Must specificy the custom widget name");
+            throw new ParserException("Must specify the custom widget name");
 
         return new string[] { customWidgetName };   
     }
 
     public Scope Generate(string Line, Scope Parent)
     {
-        string[] details = GetDetails(Line);
-        
         return new WidgetScope(RSSParser.CurrentParser, new StatmentType[] { StatmentType.WidgetScopeOpening, StatmentType.Variable, StatmentType.PropertyAssignment, StatmentType.CustomWidgetScopeOpening }, Parent);
+    }
+
+    public bool IsMatch(string Line)
+    {
+        return MatchRegex.IsMatch(Line) && Line.StartsWith("\"");
+    }
+}
+
+class StyleScopeStatment : Statment
+{
+    private static readonly Regex MatchRegex = new Regex("\\s*style\\s*\".+?\"\\s*{", RegexOptions.Compiled);
+    private static readonly Regex DetailsRegex = new Regex("\\s*style\\s*\"(?<style_name>.+?)\"\\s*{", RegexOptions.Compiled);
+
+    public StatmentType ID
+    {
+        get
+        {
+            return StatmentType.StyleScopeOpening;
+        }
+    }
+
+    public string[] GetDetails(string Line)
+    {
+        Match m = DetailsRegex.Match(Line);
+
+        string styleName = m.Groups["style_name"].Value;
+
+        if (string.IsNullOrWhiteSpace(styleName))
+            throw new ParserException("The style name cannot be blank.");
+
+        return new string[] { styleName };
+    }
+
+    public Scope Generate(string Line, Scope Parent)
+    {
+        string[] details = GetDetails(Line);
+
+        return new StyleScope(RSSParser.CurrentParser, new StatmentType[] { StatmentType.StyleIdOpening, StatmentType.Variable }, Parent, details[0]);
+    }
+
+    public bool IsMatch(string Line)
+    {
+        return MatchRegex.IsMatch(Line) && Line.StartsWith("style");
+    }
+
+}
+
+class StyleIdStatment : Statment
+{
+    private static readonly Regex MatchRegex = new Regex("\\s*\\.(.+)(\\s*,\\s*.[.+?])?\\s*{", RegexOptions.Compiled);
+    private static readonly Regex DetailsRegex = new Regex("\\s*(?<ids>\\..+?){", RegexOptions.Compiled);
+
+    public StatmentType ID
+    {
+        get
+        {
+            return StatmentType.StyleIdOpening;
+        }
+    }
+
+    public string[] GetDetails(string Line)
+    {
+        Match m = DetailsRegex.Match(Line);
+
+        string ids = m.Groups["ids"].Value;
+
+        string[] splitIds = ids.Split(',');
+
+        string[] newSplit = new string[splitIds.Length];
+
+        for (int i = 0; i < splitIds.Length; i++)
+        {
+            string trimmed = splitIds[i].Trim();
+
+            if (!trimmed.StartsWith("."))
+                throw new ParserException("Invalid style id, they must begin with a .");
+
+            string withoutDot = trimmed.Remove(0, 1);
+
+            if (!RobloxParser.RobloxHierachy.ContainsKey(withoutDot))
+                throw new ParserException($"Invalid key for style, no Instance with a ClassName of {withoutDot}");
+
+            newSplit[i] = withoutDot;
+        }
+
+        return newSplit;
+    }
+
+    public Scope Generate(string Line, Scope Parent)
+    {
+        return new StyleIdScope(RSSParser.CurrentParser, new StatmentType[] { StatmentType.PropertyAssignment }, Parent, null);
     }
 
     public bool IsMatch(string Line)
@@ -238,6 +328,8 @@ namespace RSS.RSSParser
             Statments.Add(new WidgetDeclaration());
             Statments.Add(new WidgetScopeClosing());
             Statments.Add(new PropertyAssignment());
+            Statments.Add(new StyleScopeStatment());
+            Statments.Add(new StyleIdStatment());
             Statments.Add(new CustomWidgetDeclaration());
             
         }

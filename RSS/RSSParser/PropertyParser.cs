@@ -43,7 +43,7 @@ namespace RSS.RSSParser
             return varVal;
         }
 
-        internal static void Parse(Scope Sc, string varVal, string propName)
+        internal static void Parse(Scope Sc, string varVal, string propName, string[] classes = null)
         {
             if (PropertyCallbacks == null)
                 AddCallbacks();
@@ -89,6 +89,24 @@ namespace RSS.RSSParser
                         Instance.AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, Callback(varVal, WScope))); 
 
                 }
+            }
+            else if (Sc.ID == "StyleId")
+            {
+                RobloxProperty Prop = null;
+                foreach(var Name in classes)
+                {
+                    RobloxInstance Inst = RobloxParser.RobloxHierachy[Name];
+
+                    if (!Inst.GetProperty(propName, out Prop))
+                        throw new ParserException($"The ClassName {Name} in the style {((StyleScope)Sc.Parent).StyleName} does not have the property you are trying to set: {propName}");
+                }
+                
+                PropertyProcessCallback Callback;
+                
+                bool isValidFunc = PropertyCallbacks.TryGetValue(Prop.ValueType, out Callback);
+
+                if (isValidFunc)
+                    ((StyleIdScope)Sc).AddProperty(new RSSProperty(Prop.Name, Prop.ValueType, Callback(varVal, Sc)));
             }
 
         }
@@ -184,6 +202,19 @@ namespace RSS.RSSParser
                 return new string[] { JSONWriter.Quotify(str) };
                     
                 
+            });
+
+            PropertyCallbacks.Add("Style", (str, scope) => {
+                RSSParser Current = RSSParser.CurrentParser;
+
+                if (Current.Styles == null)
+                    throw new ParserException($"No Style called {str}");
+
+                foreach (var style in Current.Styles)
+                    if (style.styleName == str)
+                        return new string[] { JSONWriter.Quotify(str) };
+
+                throw new ParserException($"No Style called {str}");
             });
             
         }

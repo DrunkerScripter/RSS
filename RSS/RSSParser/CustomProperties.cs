@@ -36,6 +36,8 @@ namespace RSS.RSSParser
 
             GuiObject.AddProperty(new RobloxProperty("Alignment", null, "Alignment"));
 
+            GuiObject.AddProperty(new RobloxProperty("CustomStyle", null, "Style"));
+
             AddRobloxEnum("Alignment", "Top-Left", "Top-Centre", "Top-Right", "Centre-Left", "Centre", "Centre-Right", "Bottom-Left", "Bottom-Right");
 
         }

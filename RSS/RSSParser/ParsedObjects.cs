@@ -92,6 +92,36 @@ namespace RSS.RSSParser
 
     class RSSStyle
     {
+        public List<RSSStyleItem> styleIds;
+        public string styleName;
+
+        public RSSStyle(string styleName, List<RSSStyleItem> styleIds)
+        {
+            this.styleName = styleName;
+            this.styleIds = styleIds;
+        }
+    }
+
+    class RSSStyleItem
+    {
+
+        public string[] Ids;
+
+        public List<RSSProperty> Properties;
+
+        internal void AddProperty(RSSProperty Property)
+        {
+            if (Properties == null)
+                Properties = new List<RSSProperty>();
+
+            Properties.Add(Property);
+        }
+
+        public RSSStyleItem(string[] ids, List<RSSProperty> props)
+        {
+            this.Ids = ids;
+            this.Properties = props;
+        }
 
     }
 

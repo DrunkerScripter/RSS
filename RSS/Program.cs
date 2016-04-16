@@ -9,7 +9,6 @@ using RSS.RobloxJSONParser.Reader;
 using RSS.Http;
 using System.Runtime.InteropServices;
 using RSS.RSSParser;
-using RSS.RSSParser;
 using RSS.RobloxJSONParser.Writer;
 //using RSS.RobloxJSONParser.Writer;
 

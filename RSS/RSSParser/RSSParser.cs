@@ -37,6 +37,9 @@ namespace RSS.RSSParser
         //List that are custom widgets.
         public List<RSSInstance> CustomWidgets;
 
+        //List of all the widget styles.
+        public List<RSSStyle> Styles;
+
         private void ProcessLine()
         {
             string str = Line.ToString().Trim();
@@ -134,11 +137,29 @@ namespace RSS.RSSParser
                     else
                         ((WidgetScope)(scope.Parent)).Instance.AddChild(WScope.Instance);
                     
-                    
-
                 }
                 else
                     throw new ParserException("Widget scope operation failed, I don't know why...");
+            }
+            else if (scope.ID == "Style")
+            {
+                var SScope = scope as StyleScope;
+
+                if (SScope != null)
+                {
+                    if (Styles == null)
+                        Styles = new List<RSSStyle>();
+
+                    Styles.Add(new RSSStyle(SScope.StyleName, SScope.Ids));
+                }
+            }
+            else if (scope.ID == "StyleId")
+            {
+                var SScope = scope as StyleIdScope;
+
+                if (SScope != null)
+                    ((StyleScope)SScope.Parent).AddStatment(SScope);
+                
             }
         }
 
