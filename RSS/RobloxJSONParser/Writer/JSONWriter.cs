@@ -27,9 +27,9 @@ namespace RSS.RobloxJSONParser.Writer
             base.Write(s);
         }
 
-        public void WriteComma()
+        public void WriteComma(bool force = false)
         {
-            if (lastLetter != ',' && (lastLetter == ']' || lastLetter == '}' || lastLetter == '"'))
+            if (lastLetter != ',' && (lastLetter == ']' || lastLetter == '}' || lastLetter == '"' || force))
                 Write(',');
         }
 
@@ -92,9 +92,9 @@ namespace RSS.RobloxJSONParser.Writer
             for (int i = 0; i < Arr.Length; i++)
             {
                 Callback.Invoke(Arr[i]);
-                
+
                 if (i != stopComma)
-                    Stream.WriteComma();
+                    Stream.Write(',');
                 
             }
         }

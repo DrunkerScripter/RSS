@@ -46,6 +46,9 @@ namespace RSS.RSSParser
 
             Statment ID = StatmentManager.GetLineType(str);
 
+            if (ID.ID == StatmentType.Unknown)
+                throw new ParserException($"Unkown Line '{str}'");
+
             Program.AddStatment(ID, str);
 
             Line.Clear();
@@ -74,6 +77,8 @@ namespace RSS.RSSParser
                 {
                     LineNo += 1;
                     RSSParser.LineNo = LineNo;
+                    if (inQuotes)
+                        throw new ParserException("Unterminated string", LineNo - 1);
                 }
 
                 //We never concatenate a string.

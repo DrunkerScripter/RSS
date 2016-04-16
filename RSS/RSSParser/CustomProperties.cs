@@ -65,6 +65,14 @@ namespace RSS.RSSParser
 
             AddColors();
 
+            //Class specific custom properties.
+
+            RobloxInstance TextLabel = RobloxParser.RobloxHierachy["TextLabel"];
+
+            TextLabel.AddProperty(new RobloxProperty("text-shadow-transparency", null, "float"));
+            TextLabel.AddProperty(new RobloxProperty("text-shadow-offset", null, "Proportion"));
+            TextLabel.AddProperty(new RobloxProperty("text-shadow-color", null, "Color3"));
+
         }
 
     }

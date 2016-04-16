@@ -88,7 +88,7 @@ class WidgetDeclaration : Statment
         if (string.IsNullOrWhiteSpace(widgetClass))
             throw new ParserException("You cannot leave the classname blank");
 
-        if (!RobloxParser.RobloxHierachy.ContainsKey(widgetName))
+        if (!RobloxParser.RobloxHierachy.ContainsKey(widgetClass))
             throw new ParserException($"The ClassName {widgetClass} does not exsist.");
 
         return new string[] { widgetClass, widgetName };
